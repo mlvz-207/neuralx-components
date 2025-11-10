@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../assets/nx.css">
+</head>
+<body>
+  <div id="nx-tabs-panel"></div>
+
+  <script>
+  /* ============= EDITAR AQUÍ ============= */
+  const NX = {
+    logo: "../assets/logo neuralx solo.png",
+    secciones: [
+      {
+        id: "jose",
+        titulo: "Jose Dicarlo Ochoa",
+        aviso: "Sin transferencias registradas.",
+        saldos: { total: 485011.00, breve: 0.00, transito: 0.00, disponibleTransferencias: 485011.00, vitalicio: 485011.00 },
+        perfil: {
+          idCuenta: "acct_1SLCii1VTtI441E", conectado: "23 oct 2025", pais: "México",
+          correo: "malvarez@aeroharvestech.co", sitio: "www.neurax.com",
+          descripcionCargo: "NEURALX.COM", estado: "Activo"
+        }
+      },
+      {
+        id: "edson",
+        titulo: "Edson Marcelino Romero",
+        aviso: "Sin transferencias registradas.",
+        saldos: { total: 1196320.15, breve: 0.00, transito: 0.00, disponibleTransferencias: 1196320.15, vitalicio: 1196320.15 },
+        perfil: {
+          idCuenta: "acct_1SKC1H8QJiMAB0uV", conectado: "20 oct 2025", pais: "México",
+          correo: "malvarez207@outlook.com", sitio: "www.sandbox.com",
+          descripcionCargo: "SWISS PAY", estado: "Activo"
+        }
+      },
+      {
+        id: "luis",
+        titulo: "Luis Guillermo Carreón",
+        aviso: "Sin transferencias registradas.",
+        saldos: { total: 0.00, breve: 0.00, transito: 0.00, disponibleTransferencias: 0.00, vitalicio: 0.00 },
+        perfil: {
+          idCuenta: "acct_1SKBKy1eN6biy0sn", conectado: "20 oct 2025", pais: "México",
+          correo: "—", sitio: "www.gmdjf.com",
+          descripcionCargo: "GMDJF.COM", estado: "Activo"
+        }
+      }
+    ]
+  };
+  /* =========== FIN DE EDICIÓN ============ */
+
+  const el = document.getElementById("nx-tabs-panel");
+  const fmtMXN = n => new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(n);
+  function iconAlert(){return `⚠️`;}
+
+  function renderTabs(activeId){
+    const tabs = NX.secciones.map(s=>`<button class="nx-tab ${s.id===activeId?"active":""}" data-id="${s.id}">${s.titulo}</button>`).join("");
+    const s = NX.secciones.find(x=>x.id===activeId) || NX.secciones[0];
+
+    el.innerHTML = `
+      <div class="nx-top">
+        <img class="nx-logo" src="${NX.logo}" alt="NeuralX">
+        <div><div class="nx-title">NeuralX Global</div><h1 class="nx-h1">Cuentas conectadas</h1></div>
+      </div>
+      <div class="nx-tabs" id="nx-tabs">${tabs}</div>
+      <div class="nx-grid">
+        <div>
+          <div class="nx-card">
+            <div class="nx-section-title">Saldos de la cuenta</div>
+            <div class="nx-kpis">
+              <div class="nx-kpi"><div class="lbl">Saldo total</div><div class="val">${fmtMXN(s.saldos.total)}</div></div>
+              <div class="nx-kpi"><div class="lbl">Disponible en breve</div><div class="val">${fmtMXN(s.saldos.breve)}</div></div>
+              <div class="nx-kpi"><div class="lbl">En tránsito al banco</div><div class="val">${fmtMXN(s.saldos.transito)}</div></div>
+            </div>
+            <div class="nx-section-title">Resumen de saldo</div>
+            <div class="nx-progress"><span id="nx-fill"></span></div>
+            <ul class="nx-list">
+              <li class="nx-row"><span class="nx-dot"></span><span class="nx-name">Disponible para transferencias</span><span class="nx-amt">${fmtMXN(s.saldos.disponibleTransferencias)}</span></li>
+              <li class="nx-row"><span class="nx-dot ok"></span><span class="nx-name">Volumen total vitalicio</span><span class="nx-amt">${fmtMXN(s.saldos.vitalicio)}</span></li>
+            </ul>
+            <div class="nx-badge">${iconAlert()} <span>${s.aviso}</span></div>
+          </div>
+
+          <div class="nx-card" style="margin-top:12px;">
+            <div class="nx-section-title">Transferencia de dinero</div>
+            <div class="nx-informe"><div><strong>Transferencias</strong><div class="nx-key">No hay transferencias asociadas con esta cuenta.</div></div><button class="nx-btn" disabled>Simular</button></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="nx-card">
+            <div class="nx-section-title">Perfil</div>
+            <div class="nx-kv"><div class="nx-key">ID de la cuenta</div><div>${s.perfil.idCuenta}</div></div>
+            <div class="nx-kv"><div class="nx-key">Conectado el</div><div>${s.perfil.conectado}</div></div>
+            <div class="nx-kv"><div class="nx-key">País</div><div>${s.perfil.pais}</div></div>
+            <div class="nx-kv"><div class="nx-key">Correo</div><div>${s.perfil.correo}</div></div>
+            <div class="nx-kv"><div class="nx-key">Sitio web</div><div>${s.perfil.sitio}</div></div>
+            <div class="nx-kv"><div class="nx-key">Descripción en extracto</div><div>${s.perfil.descripcionCargo}</div></div>
+            <div class="nx-kv"><div class="nx-key">Estado</div><div>${s.perfil.estado}</div></div>
+          </div>
+
+          <div class="nx-card" style="margin-top:12px;">
+            <div class="nx-section-title">Informes</div>
+            <div class="nx-informe"><div><strong>Resumen de saldo</strong><div class="nx-key">Genera un PDF con este estado.</div></div><button class="nx-btn" disabled>Descargar</button></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const base = (s.saldos.vitalicio || s.saldos.total || 1);
+    const pct = Math.max(0, Math.min(100, Math.round((s.saldos.disponibleTransferencias / base) * 100)));
+    requestAnimationFrame(()=> document.getElementById("nx-fill").style.width = pct + "%");
+
+    el.querySelectorAll(".nx-tab").forEach(b=> b.addEventListener("click", ()=> renderTabs(b.dataset.id)));
+  }
+
+  renderTabs(NX.secciones[0].id);
+  </script>
+</body>
+</html>
